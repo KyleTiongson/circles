@@ -4,22 +4,17 @@ const CircleApp = () => {
   const [circle, setCircle] = useState({
     x: Math.floor(Math.random() * 90),
     y: Math.floor(Math.random() * 90),
-    radius: 200,
+    radius: getInitialRadius(),
     color: getRandomColor(),
   });
 
-  const [score, setScore] = useState({
-    hits: 0,
-    misses: 0,
-  });
-
+  const [score, setScore] = useState({ hits: 0, misses: 0 });
   const [gameFinished, setGameFinished] = useState(false);
   const [timeElapsed, setTimeElapsed] = useState(0);
   const [timerRunning, setTimerRunning] = useState(false);
-  const [gameStarted, setGameStarted] = useState(false); // State to control when the game starts
+  const [gameStarted, setGameStarted] = useState(false);
 
   useEffect(() => {
-    // Ensure body has no margin, padding, and no scrollbars
     document.body.style.margin = 0;
     document.body.style.padding = 0;
     document.body.style.overflow = 'hidden';
@@ -125,8 +120,13 @@ const CircleApp = () => {
   );
 };
 
+const getInitialRadius = () => {
+  const screenWidth = window.innerWidth;
+  return Math.min(200, screenWidth * 0.3); // Dynamic initial radius based on screen width
+};
+
 const getRadius = (hits) => {
-  const initialRadius = 200;
+  const initialRadius = getInitialRadius();
   const minRadius = 20;
   const decayFactor = 0.9;
 
@@ -143,16 +143,16 @@ const getRandomColor = () => {
 const styles = {
   container: {
     position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: '50vw',
+    top: 0,
+    left: 0,
+    width: '100vw',
     height: '100vh',
     backgroundColor: '#ffffff',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    touchAction: 'manipulation', 
   },
   circle: {
     position: 'absolute',
@@ -161,24 +161,26 @@ const styles = {
   },
   scoreContainer: {
     position: 'absolute',
-    top: '40px',
-    left: '20px',
+    top: '10px',
+    left: '10px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start',
   },
   scoreText: {
-    fontSize: '24px',
+    fontSize: '20px',
     fontWeight: 'bold',
-    marginRight: '10px',
+    marginBottom: '5px',
     color: 'black',
   },
   timerText: {
-    fontSize: '24px',
+    fontSize: '20px',
     color: 'black',
     fontWeight: 'bold',
-    marginLeft: '20px',
   },
   startButton: {
     padding: '15px 30px',
-    fontSize: '24px',
+    fontSize: '20px',
     backgroundColor: '#28a745',
     color: 'white',
     border: 'none',
@@ -186,7 +188,7 @@ const styles = {
     cursor: 'pointer',
   },
   finishMessage: {
-    fontSize: '36px',
+    fontSize: '24px',
     fontWeight: 'bold',
     color: 'green',
     textAlign: 'center',
